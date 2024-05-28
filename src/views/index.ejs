@@ -16,10 +16,11 @@
   </head>
   <body
     class="bg-neutral-100 text-gray-900 min-w-60 max-w-[550px] leading-6 mx-auto"
-    x-data="{ total: <%= todos.length %>, incomplete: <%= totalIncomplete %>, filter: 'all' }"
-    x-effect="console.log('total', total, 'incomplete', incomplete)"
   >
-    <section class="relative shadow-xl bg-white mt-32">
+    <section
+      class="relative shadow-xl bg-white mt-32"
+      x-data="{ total: <%= todos.length %>, incomplete: <%= totalIncomplete %>, filter: 'all' }"
+    >
       <header>
         <h1
           class="absolute -top-24 w-full text-7xl font-thin text-center text-red-700"
@@ -36,9 +37,9 @@
           placeholder="What needs to be done?"
           hx-post="/todos"
           hx-trigger="keyup[key=='Enter']"
-          @htmx:after-request="$el.value = ''; total += 1; incomplete += 1"
           hx-target="#todos"
           hx-swap="beforeend"
+          @htmx:after-request="$el.value = ''; total += 1; incomplete += 1"
         />
       </header>
       <section
@@ -47,6 +48,11 @@
         hx-swap-oob="true"
         x-show="total > 0"
       >
+        <button
+          class="absolute h-16 -top-[70px] w-11 left-0 text-gray-400 rotate-90 py-2.5 px-[27px] text-2xl"
+          hx-post="toggle"
+          hx-swap="none"
+        >❯</button>
         <ul id="todos" class="divide-y">
           <% todos.forEach(todo => { %>
           <%- include('todos/todo', {todo }) %>

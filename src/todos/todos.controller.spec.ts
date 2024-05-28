@@ -10,7 +10,7 @@ describe('TodosController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TodosController],
-      providers: [TodosService]
+      providers: [TodosService],
     }).compile();
 
     controller = module.get<TodosController>(TodosController);
@@ -27,11 +27,11 @@ describe('TodosController', () => {
         id: 1,
         name: 'Testing',
         completed: false,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
       jest.spyOn(service, 'create').mockImplementation(async () => result);
 
       expect(await controller.create({ name: 'Testing' })).toBe(result);
-    })
-  })
+    });
+  });
 });

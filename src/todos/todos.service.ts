@@ -41,4 +41,10 @@ export class TodosService {
   async clearCompleted(): Promise<void> {
     await this.todosRepository.delete({ completed: true });
   }
+
+  async toggleAll(): Promise<void> {
+    const todos = await this.findAll();
+    const completed = todos.some(({ completed }) => !completed);
+    await this.todosRepository.update({ completed: !completed }, { completed });
+  }
 }
