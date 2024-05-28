@@ -1,0 +1,120 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoMVC</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body
+    class="bg-neutral-100 text-gray-900 min-w-60 max-w-[550px] leading-6 mx-auto"
+  >
+    <section class="relative shadow-xl bg-white mt-32">
+      <header>
+        <h1
+          class="absolute -top-24 w-full text-7xl font-thin text-center text-red-700"
+        >
+          todos
+        </h1>
+        <input
+          class="relative text-inherit h-16 p-4 pl-16 border-none w-full text-2xl leading-6 font-light italic bg-[rgba(0, 0, 0, 0.003)] shadow-inner focus:outline-0 focus:ring-2 focus:ring-red-700"
+          type="text"
+          name="name"
+          autofocus
+          aria-label="What needs to be done?"
+          placeholder="What needs to be done?"
+          hx-post="/todos"
+          hx-trigger="keyup[key=='Enter']"
+          hx-on::after-request="this.value=''"
+        />
+      </header>
+      <section
+        id="todosList"
+        class="relative z-[2] border-t border-t-gray-200"
+        hx-swap-oob="true"
+        x-data="{ filter: 'all'}"
+      >
+        <% if (todos.length !== 0) { %>
+        <ul id="todos" class="divide-y">
+          <% todos.forEach(todo => { %>
+            <%- include('todos/todo', {
+            todo: todo }) %>
+          <% }) %>
+        </ul>
+        <footer
+          id="controls"
+          class="py-2 px-3 h-12 text-sm border-t flex items-center font-extralight tracking-tight justify-between"
+        >
+          <span id="incomplete"><%= totalIncomplete %> items left</span>
+          <span id="filters" hx-swap="none" class="space-x-1">
+            <span>
+              <input
+                class="peer hidden"
+                id="filterAll"
+                type="radio"
+                name="filter"
+                value="all"
+                x-model="filter"
+              />
+              <label
+                for="filterAll"
+                class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+                >All</label
+              >
+            </span>
+            <span>
+              <input
+                class="peer hidden"
+                id="filterActive"
+                type="radio"
+                name="filter"
+                value="active"
+                x-model="filter"
+              />
+              <label
+                for="filterActive"
+                class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+                >Active</label
+              >
+            </span>
+            <span>
+              <input
+                class="peer hidden"
+                id="filterCompleted"
+                type="radio"
+                name="filter"
+                value="completed"
+                x-model="filter"
+              />
+              <label
+                for="filterCompleted"
+                class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+                >Completed</label
+              >
+            </span>
+          </span>
+          <button
+            id="clearCompleted"
+            class="<%= showClearCompleted ? '' : 'invisible' %>"
+            hx-delete="/completed"
+            hx-swap="none"
+          >
+            Clear completed
+          </button>
+        </footer>
+        <% } %>
+      </section>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script
+      src="https://unpkg.com/htmx.org@1.9.12"
+      integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<li
+  id='todo-<%= todo.id %>'
+  class='relative text-2xl leading-5 group'
+  x-show="filter !== <%= todo.completed ? '"active"' : '"completed"' %>"
+  x-data='{ editing: false }'
+  @dblclick='editing = true; $nextTick(() => { $refs.input.focus(); })'
+  hx-swap-oob="true"
+>
+  <div x-show='!editing' class='flex items-center'>
+    <button
+      id='todo-<%= todo.id %>-completed'
+      class='w-8 h-8 ml-2 my-auto border rounded-full text-green-600 font-light text-center leading-tight <%= todo.completed ? 'border-green-600' : 'border-gray-400' %>'
+      name='completed'
+      aria-label='Toggle the completion state of this todo'
+      value='<%= !todo.completed %>'
+      hx-post='/todos/<%= todo.id %>'
+      hx-swap='none'
+    >
+      <% if (todo.completed) { %>
+        ✓
+      <% } %>
+    </button>
+    <label
+      class='p-4 pl-6 font-light break-words <%= todo.completed ? 'line-through text-gray-400' : 'text-slate-800' %>'
+    >
+      <%- todo.name %>
+    </label>
+    <button
+      class='hidden group-hover:block absolute top-0 right-2.5 bottom-0 w-10 h-10 my-auto text-3xl text-gray-400 font-thin'
+      hx-delete='/todos/<%= todo.id %>'
+      hx-swap='none'
+    >×</button>
+  </div>
+  <input
+    x-cloak
+    x-show='editing'
+    x-ref='input'
+    class='relative font-light left-11 w-[calc(100%-2.75rem)] py-3 px-4 text-2xl border border-gray-400 shadow-inner'
+    @blur='editing = false'
+    @keyup.escape.window='editing = false'
+    value='<%- todo.name %>'
+    name='name'
+    hx-post='/todos/<%= todo.id %>'
+    hx-trigger="keyup[key=='Enter']"
+    hx-swap='none'
+  />
+</li>
