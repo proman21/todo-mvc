@@ -13,7 +13,7 @@ export class TodosService {
   ) {}
 
   findAll(): Promise<Todo[]> {
-    return this.todosRepository.find();
+    return this.todosRepository.find({ order: { createdAt: 'asc' } });
   }
 
   findOne(id: number): Promise<Todo | null> {

@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Redirect } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Render,
+} from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodo, Todo, UpdateTodo } from './todo.entity';
 
@@ -12,9 +21,10 @@ export class TodosController {
   }
 
   @Post()
-  @Redirect('/')
-  create(@Body() data: CreateTodo): Promise<Todo> {
-    return this.todosService.create(data);
+  @Render('todos/todo')
+  async create(@Body() data: CreateTodo) {
+    const todo = await this.todosService.create(data);
+    return { todo };
   }
 
   @Get(':id')
@@ -23,16 +33,16 @@ export class TodosController {
   }
 
   @Post(':id')
-  @Redirect('/')
-  update(
+  @Render('todos/todo')
+  async update(
     @Param('id', new ParseIntPipe()) id: number,
     @Body() data: UpdateTodo,
-  ): Promise<Todo> {
-    return this.todosService.update(id, data);
+  ) {
+    const todo = await this.todosService.update(id, data);
+    return { todo };
   }
 
   @Delete(':id')
-  @Redirect('/', 303)
   delete(@Param('id', new ParseIntPipe()) id: number): Promise<void> {
     return this.todosService.delete(id);
   }

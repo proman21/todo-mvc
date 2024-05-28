@@ -1,0 +1,61 @@
+<footer
+  id="controls"
+  class="py-2 px-3 h-12 text-sm border-t flex items-center font-extralight tracking-tight justify-between"
+>
+  <span id="incomplete"><span x-text="incomplete"></span> items left</span>
+  <span id="filters" class="space-x-1">
+    <span>
+      <input
+        class="peer hidden"
+        id="filterAll"
+        type="radio"
+        name="filter"
+        value="all"
+        x-model="filter"
+      />
+      <label
+        for="filterAll"
+        class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+        >All</label
+      >
+    </span>
+    <span>
+      <input
+        class="peer hidden"
+        id="filterActive"
+        type="radio"
+        name="filter"
+        value="active"
+        x-model="filter"
+      />
+      <label
+        for="filterActive"
+        class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+        >Active</label
+      >
+    </span>
+    <span>
+      <input
+        class="peer hidden"
+        id="filterCompleted"
+        type="radio"
+        name="filter"
+        value="completed"
+        x-model="filter"
+      />
+      <label
+        for="filterCompleted"
+        class="px-2 py-1 border rounded border-transparent peer-checked:border-red-700"
+        >Completed</label
+      >
+    </span>
+  </span>
+  <button
+    id="clearCompleted"
+    :class="{ 'invisible': total === incomplete }"
+    hx-delete="/completed"
+    hx-swap="none"
+  >
+    Clear completed
+  </button>
+</footer>

@@ -10,8 +10,7 @@ export class AppController {
   async index() {
     const todos = await this.todosService.findAll();
     const totalIncomplete = todos.filter(({ completed }) => !completed).length;
-    const showClearCompleted = todos.length !== totalIncomplete;
-    return { todos, totalIncomplete, showClearCompleted };
+    return { todos, totalIncomplete };
   }
 
   @Delete('completed')
